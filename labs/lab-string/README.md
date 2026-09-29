@@ -277,7 +277,7 @@ Los tests de `IsEmpty` ya están activos en `StringTest.c`. Corré `make test` y
 
 **P1** — `IsEmpty` podría haberse escrito también como `return s[0] == '\0'`. ¿Son equivalentes? ¿Por qué?
 
-> R:
+> R:Sí, son equivalentes porque s[0] y *s acceden al primer carácter de la cadena.
 
 ---
 
@@ -328,14 +328,14 @@ make test
 
 **P2** — ¿Qué hace `s + 1`? ¿Por qué avanza al siguiente carácter y no al siguiente byte?
 
-> R:
+> R:s + 1 avanza al siguiente elemento de tipo char. Como char ocupa 1 byte, en este caso también avanza un byte.
 
 **P3** — Si llamaras a `GetLength(NULL)`, ¿qué pasaría? ¿Por qué las precondiciones del contrato dicen `s != NULL`?
 
-> R:
+> R:Provocaría un error porque GetLength intentaría acceder a memoria mediante un puntero NULL. La precondición s != NULL garantiza que el puntero sea válido.
 
 ```
-GETLENGTH_PASA=
+GETLENGTH_PASA=SI
 ```
 _(escribí SI cuando todos los tests de GetLength pasen)_
 
@@ -384,7 +384,7 @@ make test
 ```
 
 ```
-AREEQUAL_PASA=
+AREEQUAL_PASA=SI
 ```
 _(escribí SI cuando todos los tests de AreEqual pasen)_
 
@@ -414,7 +414,7 @@ int AreDecimalDigits(const char *s) {
 
 **P5** — ¿Por qué la cadena vacía no debería considerarse un conjunto de dígitos decimales? Pensalo desde la especificación matemática.
 
-> R:
+> R:Porque un conjunto de dígitos decimales debe contener al menos un dígito. La cadena vacía no contiene ningún dígito, por lo que no debería considerarse válida.
 
 #### Corrección
 
@@ -425,7 +425,7 @@ make test
 ```
 
 ```
-AREDECIMALDIGITS_PASA=
+AREDECIMALDIGITS_PASA=SI
 ```
 _(escribí SI cuando todos los tests de AreDecimalDigits pasen)_
 
@@ -452,7 +452,7 @@ make test
 ```
 
 ```
-CONTAINS_PASA=
+CONTAINS_PASA=SI
 ```
 _(escribí SI cuando todos los tests de Contains pasen)_
 
@@ -467,7 +467,7 @@ Antes de implementar, discutí con tu equipo:
 
 **P6** — Conclusión de la discusión:
 
-> R:
+> R:Es correcto tener ToInteger en un módulo separado Conversion, porque su responsabilidad es convertir una cadena a un número, no realizar operaciones propias de strings.
 
 ---
 
@@ -494,7 +494,7 @@ int ToInteger(const char *s) {
 
 **P7** — El loop acumula correctamente el valor en `resultado`. ¿Qué está mal en el `return`?
 
-> R:
+> R:Está devolviendo signo en lugar de resultado. Debería ser return signo * resultado;
 
 #### Corrección
 
@@ -506,10 +506,10 @@ make test
 
 **P8** — La expresión `*s - '0'` convierte un carácter dígito al entero correspondiente. ¿Por qué funciona? ¿Qué devuelve `'3' - '0'`?
 
-> R:
+> R:Porque los caracteres numéricos están ordenados consecutivamente en ASCII. '3' - '0' devuelve 3.
 
 ```
-TOINTEGER_PASA=
+TOINTEGER_PASA=SI
 ```
 _(escribí SI cuando todos los tests de ToInteger pasen)_
 
@@ -562,7 +562,7 @@ foo
 
 **P9** — ¿Por qué `(void)argc` suprime un warning? ¿Cuándo sería necesario usar `argc`?
 
-> R:
+> R:Porque (void)argc indica que el parámetro fue recibido pero no se usa, evitando el warning. argc es necesario cuando queremos saber cuántos argumentos recibió el programa.
 
 ---
 
@@ -589,7 +589,7 @@ Salida esperada:
 ```
 
 ```
-LONGITUDES_PASA=
+LONGITUDES_PASA=SI
 ```
 _(SI o NO)_
 
@@ -616,7 +616,7 @@ make mayorlongitud
 ```
 
 ```
-MAYORLONGITUD_PASA=
+MAYORLONGITUD_PASA=SI
 ```
 _(SI o NO)_
 
@@ -635,7 +635,7 @@ make todosiguales
 ```
 
 ```
-TODOSIGUALES_PASA=
+TODOSIGUALES_PASA=SI
 ```
 _(SI o NO)_
 
@@ -652,7 +652,7 @@ make suma
 ```
 
 ```
-SUMA_PASA=
+SUMA_PASA=SI
 ```
 _(SI o NO)_
 
@@ -662,15 +662,15 @@ _(SI o NO)_
 
 **P10** — `GetLength` es recursiva pero en C una llamada recursiva consume un stack frame. Si llamaras `GetLength` con un string de 1.000.000 de caracteres, ¿qué pasaría? ¿Cómo lo resolverías?
 
-> R:
+> R:Podría desbordar el stack por tantas llamadas recursivas. Lo resolvería usando un recorrido iterativo con un puntero.
 
 **P11** — En la Parte III, todos los programas usan `char **arg` para iterar en vez de un índice entero. ¿Qué ventaja tiene este estilo? ¿Cuándo sería preferible usar el índice?
 
-> R:
+> R:Podría desbordar el stack por tantas llamadas recursivas. Lo resolvería usando un recorrido iterativo con un puntero.
 
 **P12** — En C, `"hola"` es un literal de tipo `const char *`. Si intentaras modificar un carácter con `s[0] = 'H'`, el comportamiento es indefinido. ¿Por qué? ¿En qué parte de la memoria viven los literales?
 
-> R:
+> R:Podría desbordar el stack por tantas llamadas recursivas. Lo resolvería usando un recorrido iterativo con un puntero.
 
 ---
 
